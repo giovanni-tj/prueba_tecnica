@@ -14,8 +14,7 @@ Requerimientos y reglas de negocio:
 1.	Modelo de Datos y DDL
 
 Al ser un proceso ETL de solo extracción y carga sin requerir alguna transformación el modelo de datos mantendrá los mismos atributos tanto en origen como en destino.
- 
-
+![image](https://user-images.githubusercontent.com/51729393/193438394-ebff88ce-a530-4fba-b4e8-19ece6d3fe2c.png)
 DDL Origen:
 CREATE TABLE CUSTOMERS(
     first_name varchar(255),
@@ -48,49 +47,5 @@ CREATE TABLE CUSTOMERS(
     web varchar(255)
 );
 
-2.	Diagrama de Diseño.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-3.	Carga de información a una Base de Datos.
-
-El archivo us.csv fue cargado a Blob Storage.
-
-Se crea la BD DBUS.
-
- 
-Mediante Data Factory se realiza la carga de información del archivo us.csv de Blob Storage a la BD BDUS de SQL Database.
-
-Se realiza consulta de validación.
-
-
-
-
-
-
-4.	Pipeline del Proceso.
-
-Flujo de datos de la tabla origen al Datawarehouse y al archivo en formato Parquet.
-
-
-
-
-
-
-Se realiza consulta de validación de carga en el Datawarehouse.
-![image](https://user-images.githubusercontent.com/51729393/193438342-b2601b99-4545-4dae-ac0f-e25c620a6573.png)
-
+![image](https://user-images.githubusercontent.com/51729393/193438405-da767ab8-7eb3-4c8b-b193-3fddeb613df7.png)
 
