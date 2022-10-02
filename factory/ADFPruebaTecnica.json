@@ -1,0 +1,9 @@
+{
+	"name": "ADFPruebaTecnica",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "2b3dbe79-2c00-41d3-9213-b16fcca3bbd9",
+		"tenantId": "4ae54b05-b77e-4224-aef1-8661422e0816"
+	}
+}

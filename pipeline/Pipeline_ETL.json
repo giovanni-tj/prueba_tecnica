@@ -1,0 +1,243 @@
+{
+	"name": "Pipeline_ETL",
+	"properties": {
+		"description": "ETL básico de una fuente a un destino (DHW)",
+		"activities": [
+			{
+				"name": "CargaInformacionCSVtoDB",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": false,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE [dbo].[CUSTOMERS]",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "first_name",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "first_name",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "last_name",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "last_name",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "company_name",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "company_name",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "address",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "address",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "city",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "city",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "county",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "county",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "state",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "state",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "zip",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "zip",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "phone1",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "phone1",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "phone2",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "phone2",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "email",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "email",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "web",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "web",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Informacion_a_Cargar",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Tabla_BD",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "BD_to_DWH",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "CargaInformacionCSVtoDB",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "BD_to_DWH",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine",
+					"runConcurrently": true
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2022-10-01T06:31:27Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

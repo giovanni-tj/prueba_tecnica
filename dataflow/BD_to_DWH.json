@@ -1,0 +1,117 @@
+{
+	"name": "BD_to_DWH",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Tabla_BD",
+						"type": "DatasetReference"
+					},
+					"name": "Origen"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "TargetCustomers",
+						"type": "DatasetReference"
+					},
+					"name": "DestinoDWH",
+					"rejectedDataLinkedService": {
+						"referenceName": "AzureStorageLinkedService",
+						"type": "LinkedServiceReference"
+					}
+				},
+				{
+					"dataset": {
+						"referenceName": "TargetParquet",
+						"type": "DatasetReference"
+					},
+					"name": "DestinoParquet"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          company_name as string,",
+				"          address as string,",
+				"          city as string,",
+				"          county as string,",
+				"          state as string,",
+				"          zip as string,",
+				"          phone1 as string,",
+				"          phone2 as string,",
+				"          email as string,",
+				"          web as string",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Origen",
+				"Origen sink(allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     input(",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          company_name as string,",
+				"          adress as string,",
+				"          city as string,",
+				"          country as string,",
+				"          state as string,",
+				"          zip as string,",
+				"          phone1 as string,",
+				"          phone2 as string,",
+				"          email as string,",
+				"          web as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     staged: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          first_name,",
+				"          last_name,",
+				"          company_name,",
+				"          adress = address,",
+				"          city,",
+				"          country = county,",
+				"          state,",
+				"          zip,",
+				"          phone1,",
+				"          phone2,",
+				"          email,",
+				"          web",
+				"     )) ~> DestinoDWH",
+				"Origen sink(allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     input(",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          company_name as string,",
+				"          address as string,",
+				"          city as string,",
+				"          county as string,",
+				"          state as string,",
+				"          zip as string,",
+				"          phone1 as string,",
+				"          phone2 as string,",
+				"          email as string,",
+				"          web as string",
+				"     ),",
+				"     format: 'parquet',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> DestinoParquet"
+			]
+		}
+	}
+}

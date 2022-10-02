@@ -1,0 +1,66 @@
+{
+	"name": "TargetCustomers",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSynapseAnalyticsLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "first_name",
+				"type": "varchar"
+			},
+			{
+				"name": "last_name",
+				"type": "varchar"
+			},
+			{
+				"name": "company_name",
+				"type": "varchar"
+			},
+			{
+				"name": "adress",
+				"type": "varchar"
+			},
+			{
+				"name": "city",
+				"type": "varchar"
+			},
+			{
+				"name": "country",
+				"type": "varchar"
+			},
+			{
+				"name": "state",
+				"type": "varchar"
+			},
+			{
+				"name": "zip",
+				"type": "varchar"
+			},
+			{
+				"name": "phone1",
+				"type": "varchar"
+			},
+			{
+				"name": "phone2",
+				"type": "varchar"
+			},
+			{
+				"name": "email",
+				"type": "varchar"
+			},
+			{
+				"name": "web",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "CUSTOMERS"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
