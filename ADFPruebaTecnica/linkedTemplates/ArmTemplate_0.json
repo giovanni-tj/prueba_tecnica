@@ -487,6 +487,7 @@
 						"          web as string",
 						"     ),",
 						"     format: 'parquet',",
+						"     partitionFileNames:['Customers'],",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
 						"     partitionBy('hash', 1)) ~> DestinoParquet"
