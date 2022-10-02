@@ -109,7 +109,7 @@
 				"          web as string",
 				"     ),",
 				"     format: 'parquet',",
-				"     partitionFileNames:['Customers'],",
+				"     partitionFileNames:['Customers.parquet'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     partitionBy('hash', 1)) ~> DestinoParquet"
