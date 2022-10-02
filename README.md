@@ -14,7 +14,7 @@ Requerimientos y reglas de negocio:
 1.	Modelo de Datos y DDL
 
 Al ser un proceso ETL de solo extracción y carga sin requerir alguna transformación el modelo de datos mantendrá los mismos atributos tanto en origen como en destino.
-![image](https://user-images.githubusercontent.com/51729393/193438394-ebff88ce-a530-4fba-b4e8-19ece6d3fe2c.png)
+![image](https://user-images.githubusercontent.com/51729393/193438434-6a8334fb-d293-4fa2-aa60-ed4cea0a9997.png)
 DDL Origen:
 CREATE TABLE CUSTOMERS(
     first_name varchar(255),
