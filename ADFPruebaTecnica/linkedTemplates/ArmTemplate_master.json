@@ -1,0 +1,70 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Nombre de instancia de Data Factory",
+			"defaultValue": "ADFPruebaTecnica"
+		},
+		"AzureDataBaseLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"AzureDataBaseLinkedService\""
+		},
+		"AzureStorageLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"AzureStorageLinkedService\""
+		},
+		"AzureSynapseAnalyticsLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"AzureSynapseAnalyticsLinkedService\""
+		},
+		"linkedService1_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"linkedService1\""
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI de la cuenta de almacenamiento que contiene las plantillas de ARM vinculadas."
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Token de SAS para la cuenta de almacenamiento que contiene las plantillas de ARM vinculadas"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ADFPruebaTecnica_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureDataBaseLinkedService_connectionString": {
+						"value": "[parameters('AzureDataBaseLinkedService_connectionString')]"
+					},
+					"AzureStorageLinkedService_connectionString": {
+						"value": "[parameters('AzureStorageLinkedService_connectionString')]"
+					},
+					"AzureSynapseAnalyticsLinkedService_connectionString": {
+						"value": "[parameters('AzureSynapseAnalyticsLinkedService_connectionString')]"
+					},
+					"linkedService1_connectionString": {
+						"value": "[parameters('linkedService1_connectionString')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

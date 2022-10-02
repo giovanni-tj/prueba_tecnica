@@ -1,0 +1,765 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Nombre de instancia de Data Factory",
+			"defaultValue": "ADFPruebaTecnica"
+		},
+		"AzureDataBaseLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"AzureDataBaseLinkedService\""
+		},
+		"AzureStorageLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"AzureStorageLinkedService\""
+		},
+		"AzureSynapseAnalyticsLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"AzureSynapseAnalyticsLinkedService\""
+		},
+		"linkedService1_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"linkedService1\""
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataBaseLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureDataBaseLinkedService_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureStorageLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureStorageLinkedService_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSynapseAnalyticsLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureSynapseAnalyticsLinkedService_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/linkedService1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('linkedService1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Informacion_a_Cargar')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Archivo que contiene la información a cargar en la tabla  de la Base de Datos",
+				"linkedServiceName": {
+					"referenceName": "AzureStorageLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "us.csv",
+						"folderPath": "source",
+						"container": "contenedor-prueba-tecnica"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "first_name",
+						"type": "String"
+					},
+					{
+						"name": "last_name",
+						"type": "String"
+					},
+					{
+						"name": "company_name",
+						"type": "String"
+					},
+					{
+						"name": "address",
+						"type": "String"
+					},
+					{
+						"name": "city",
+						"type": "String"
+					},
+					{
+						"name": "county",
+						"type": "String"
+					},
+					{
+						"name": "state",
+						"type": "String"
+					},
+					{
+						"name": "zip",
+						"type": "String"
+					},
+					{
+						"name": "phone1",
+						"type": "String"
+					},
+					{
+						"name": "phone2",
+						"type": "String"
+					},
+					{
+						"name": "email",
+						"type": "String"
+					},
+					{
+						"name": "web",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureStorageLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Tabla_BD')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataBaseLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "first_name",
+						"type": "varchar"
+					},
+					{
+						"name": "last_name",
+						"type": "varchar"
+					},
+					{
+						"name": "company_name",
+						"type": "varchar"
+					},
+					{
+						"name": "address",
+						"type": "varchar"
+					},
+					{
+						"name": "city",
+						"type": "varchar"
+					},
+					{
+						"name": "county",
+						"type": "varchar"
+					},
+					{
+						"name": "state",
+						"type": "varchar"
+					},
+					{
+						"name": "zip",
+						"type": "varchar"
+					},
+					{
+						"name": "phone1",
+						"type": "varchar"
+					},
+					{
+						"name": "phone2",
+						"type": "varchar"
+					},
+					{
+						"name": "email",
+						"type": "varchar"
+					},
+					{
+						"name": "web",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "CUSTOMERS"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataBaseLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TargetCustomers')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSynapseAnalyticsLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "first_name",
+						"type": "varchar"
+					},
+					{
+						"name": "last_name",
+						"type": "varchar"
+					},
+					{
+						"name": "company_name",
+						"type": "varchar"
+					},
+					{
+						"name": "adress",
+						"type": "varchar"
+					},
+					{
+						"name": "city",
+						"type": "varchar"
+					},
+					{
+						"name": "country",
+						"type": "varchar"
+					},
+					{
+						"name": "state",
+						"type": "varchar"
+					},
+					{
+						"name": "zip",
+						"type": "varchar"
+					},
+					{
+						"name": "phone1",
+						"type": "varchar"
+					},
+					{
+						"name": "phone2",
+						"type": "varchar"
+					},
+					{
+						"name": "email",
+						"type": "varchar"
+					},
+					{
+						"name": "web",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "CUSTOMERS"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSynapseAnalyticsLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TargetParquet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureStorageLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "TargetCustomers.parquet",
+						"folderPath": "Targets",
+						"container": "contenedor-prueba-tecnica"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "first_name",
+						"type": "UTF8"
+					},
+					{
+						"name": "last_name",
+						"type": "UTF8"
+					},
+					{
+						"name": "company_name",
+						"type": "UTF8"
+					},
+					{
+						"name": "address",
+						"type": "UTF8"
+					},
+					{
+						"name": "city",
+						"type": "UTF8"
+					},
+					{
+						"name": "county",
+						"type": "UTF8"
+					},
+					{
+						"name": "state",
+						"type": "UTF8"
+					},
+					{
+						"name": "zip",
+						"type": "UTF8"
+					},
+					{
+						"name": "phone1",
+						"type": "UTF8"
+					},
+					{
+						"name": "phone2",
+						"type": "UTF8"
+					},
+					{
+						"name": "email",
+						"type": "UTF8"
+					},
+					{
+						"name": "web",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureStorageLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BD_to_DWH')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Tabla_BD",
+								"type": "DatasetReference"
+							},
+							"name": "Origen"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "TargetCustomers",
+								"type": "DatasetReference"
+							},
+							"name": "DestinoDWH",
+							"rejectedDataLinkedService": {
+								"referenceName": "AzureStorageLinkedService",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"dataset": {
+								"referenceName": "TargetParquet",
+								"type": "DatasetReference"
+							},
+							"name": "DestinoParquet"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          first_name as string,",
+						"          last_name as string,",
+						"          company_name as string,",
+						"          address as string,",
+						"          city as string,",
+						"          county as string,",
+						"          state as string,",
+						"          zip as string,",
+						"          phone1 as string,",
+						"          phone2 as string,",
+						"          email as string,",
+						"          web as string",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> Origen",
+						"Origen sink(allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     input(",
+						"          first_name as string,",
+						"          last_name as string,",
+						"          company_name as string,",
+						"          adress as string,",
+						"          city as string,",
+						"          country as string,",
+						"          state as string,",
+						"          zip as string,",
+						"          phone1 as string,",
+						"          phone2 as string,",
+						"          email as string,",
+						"          web as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     truncate:true,",
+						"     format: 'table',",
+						"     staged: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          first_name,",
+						"          last_name,",
+						"          company_name,",
+						"          adress = address,",
+						"          city,",
+						"          country = county,",
+						"          state,",
+						"          zip,",
+						"          phone1,",
+						"          phone2,",
+						"          email,",
+						"          web",
+						"     )) ~> DestinoDWH",
+						"Origen sink(allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     input(",
+						"          first_name as string,",
+						"          last_name as string,",
+						"          company_name as string,",
+						"          address as string,",
+						"          city as string,",
+						"          county as string,",
+						"          state as string,",
+						"          zip as string,",
+						"          phone1 as string,",
+						"          phone2 as string,",
+						"          email as string,",
+						"          web as string",
+						"     ),",
+						"     format: 'parquet',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> DestinoParquet"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Tabla_BD')]",
+				"[concat(variables('factoryId'), '/datasets/TargetCustomers')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureStorageLinkedService')]",
+				"[concat(variables('factoryId'), '/datasets/TargetParquet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Pipeline_ETL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "ETL básico de una fuente a un destino (DHW)",
+				"activities": [
+					{
+						"name": "CargaInformacionCSVtoDB",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": false,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE [dbo].[CUSTOMERS]",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "first_name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "first_name",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "last_name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "last_name",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "company_name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "company_name",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "address",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "address",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "city",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "city",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "county",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "county",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "state",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "state",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "zip",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "zip",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "phone1",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "phone1",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "phone2",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "phone2",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "email",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "email",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "web",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "web",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Informacion_a_Cargar",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Tabla_BD",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "BD_to_DWH",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "CargaInformacionCSVtoDB",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "BD_to_DWH",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"Origen": {},
+									"DestinoDWH": {},
+									"DestinoParquet": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine",
+							"runConcurrently": true
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-10-01T06:31:27Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Informacion_a_Cargar')]",
+				"[concat(variables('factoryId'), '/datasets/Tabla_BD')]",
+				"[concat(variables('factoryId'), '/dataflows/BD_to_DWH')]"
+			]
+		}
+	]
+}
