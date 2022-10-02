@@ -7,7 +7,7 @@ Para realizar la implementación del proceso se utilizo la plataforma de nube Az
 •	Synapse Analitycs
 •	Blob Storage
 •	SQL Database
-![image](https://user-images.githubusercontent.com/51729393/193438315-651bf66f-6927-4dac-ad2c-2334182e90f3.png)
+![image](https://user-images.githubusercontent.com/51729393/193438478-8509cfd7-6dcf-4101-b391-dd0054996da6.png)
 
 Requerimientos y reglas de negocio:
 
