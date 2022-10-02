@@ -9,7 +9,7 @@ Para realizar la implementación del proceso se utilizo la plataforma de nube Az
 •	SQL Database
 ![image](https://user-images.githubusercontent.com/51729393/193438478-8509cfd7-6dcf-4101-b391-dd0054996da6.png)
 
-Requerimientos y reglas de negocio:
+# Requerimiento y  reglas de negocio
 
 1.	Modelo de Datos y DDL
 
@@ -48,4 +48,13 @@ CREATE TABLE CUSTOMERS(
 );
 
 ![image](https://user-images.githubusercontent.com/51729393/193438405-da767ab8-7eb3-4c8b-b193-3fddeb613df7.png)
+
+# Diagrama de Diseño
+![image](https://user-images.githubusercontent.com/51729393/193438543-b213c661-9dcc-4e22-a5a4-d92d9c9c9bc1.png)
+
+# Carga de información a una Base de Datos
+![image](https://user-images.githubusercontent.com/51729393/193438563-f3a355a7-8daa-4fff-afdd-64688f0f28d3.png)
+Se crea la BD DBUS.![image](https://user-images.githubusercontent.com/51729393/193438571-bf5ab20a-ebce-4eaa-bac8-06738efc0a15.png)
+
+
 
