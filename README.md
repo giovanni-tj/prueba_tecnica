@@ -46,7 +46,6 @@ CREATE TABLE CUSTOMERS(
     email varchar(255),
     web varchar(255)
 );
-
 ![image](https://user-images.githubusercontent.com/51729393/193438405-da767ab8-7eb3-4c8b-b193-3fddeb613df7.png)
 # Diagrama de Diseño
 ![image](https://user-images.githubusercontent.com/51729393/193438543-b213c661-9dcc-4e22-a5a4-d92d9c9c9bc1.png)
@@ -54,8 +53,8 @@ CREATE TABLE CUSTOMERS(
 # Carga de información a una Base de Datos
 ![image](https://user-images.githubusercontent.com/51729393/193438563-f3a355a7-8daa-4fff-afdd-64688f0f28d3.png)
 Se crea la BD DBUS.
+![image](https://user-images.githubusercontent.com/51729393/193438782-e27dc4cd-b16a-409f-a400-24fb9e71cfe4.png)
 
-! [imagen] (https://user-images.githubusercontent.com/51729393/193438626-71691573-d75f-4244-a1a8-ce0110af0a44.png)
 Mediante Data Factory se realiza la carga de información del archivo us.csv de Blob Storage a la BD BDUS de SQL Database.
 
 ![image](https://user-images.githubusercontent.com/51729393/193438675-e834b143-faf7-410a-addb-9e88957cb8d7.png)
