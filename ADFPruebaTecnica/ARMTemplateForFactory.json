@@ -750,7 +750,8 @@
 						"     ),",
 						"     format: 'parquet',",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> DestinoParquet"
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> DestinoParquet"
 					]
 				}
 			},
